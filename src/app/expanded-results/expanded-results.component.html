@@ -1,27 +1,6 @@
 <div *ngIf="selectedCityData">
     <h1>{{cityName}}</h1>
-    <table>
-        <tr>
-          <th><div class="table-header"><mat-icon (click)="sortBy('dt_txt')">sort</mat-icon> Time</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('temp')">sort</mat-icon> Temperature</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('temp_max')">sort</mat-icon> Max Temperature</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('temp_min')">sort</mat-icon> Min Temperature</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('feels_like')">sort</mat-icon> Feels Like</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('pressure')">sort</mat-icon> Pressure</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('humidity')">sort</mat-icon> Humidity</div></th>
-          <th><div class="table-header"><mat-icon (click)="sortBy('sea_level')">sort</mat-icon> Sea Level</div></th>
-        </tr>
-        <tr *ngFor="let e of selectedCityData">
-            <td>{{e.dt_txt}}</td>
-          <td>{{e.main.temp}}</td>
-          <td>{{e.main.temp_max}}</td>
-          <td>{{e.main.temp_min}}</td>
-          <td>{{e.main.feels_like}}</td>
-          <td>{{e.main.pressure}}</td>
-          <td>{{e.main.humidity}}</td>
-          <td>{{e.main.sea_level}}</td>
-        </tr>
-      </table>
+      <app-generic-table [tableSetting]="tableSettings" [tableData]="selectedCityData"></app-generic-table>
   <app-graphs  [data]="selectedCityData"></app-graphs>
 </div>
  

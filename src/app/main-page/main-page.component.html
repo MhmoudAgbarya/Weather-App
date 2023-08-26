@@ -1,42 +1,15 @@
-<form [formGroup]="form" style="display: flex; margin: 20px;">
-    <label for="cityName" class="form-control" style="margin-right: 10px;">Enter City Name</label>
-    <input id="cityName" type="text" formControlName="cityName">
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+<form [formGroup]="form" style="display: flex; justify-content: center; align-items: center;height: 3rem;">
+    <label for="cityName" class="form-control" style="margin-right: 10px; background-color: #46a7f7; max-height: 100%; display: flex; justify-content: center; align-items: center; padding: 1rem; color: whitesmoke; border-radius: 4px;"><span>Enter City Name</span></label>
+    <input id="cityName" type="text" formControlName="cityName" style="border-radius: 4px; height: 100%;">
   </form>
-  
-  <button (click)="getData()">Get Data</button>
-  
-  
-  
-  <h1>{{result?.length}}</h1>
-  
-  <table>
-    <tr>
-      <th>City Name</th>
-      <th>Country</th>
-      <th>State (for US only)</th>
-      <th>Temperature</th>
-      <th>Max Temperature</th>
-      <th>Min Temperature</th>
-      <th>Feels Like</th>
-      <th>Pressure</th>
-      <th>Humidity</th>
-      <th>Coordinates (lat/lon)</th>
-      <th>Sea Level</th>
-    </tr>
-    <tr *ngFor="let e of result" [routerLink]="['/extended-city-data',e.lat,e.lon]">
-      <td>{{e.name}}</td>
-      <td>{{e.country}}</td>
-      <td>{{e.state}}</td>
-      <td>{{e?.weatherSlim?.temp}}</td>
-      <td>{{e?.weatherSlim?.temp_max}}</td>
-      <td>{{e?.weatherSlim?.temp_min}}</td>
-      <td>{{e?.weatherSlim?.feels_like}}</td>
-      <td>{{e?.weatherSlim?.pressure}}</td>
-      <td>{{e?.weatherSlim?.humidity}}</td>
-      <td>{{e.lat}}/{{e.lon}}</td>
-      <td>{{e?.weatherSlim?.sea_level}}</td>
-    </tr>
-  </table>
 
-  <app-graphs *ngIf="result && result[0]?.weather" [data]="result[0]?.weather"></app-graphs>
+  <button style="margin: 1rem;" (click)="getData()">Get Data</button>
+  
+  <h1 *ngIf="cityName">{{result?.length}} Cities found with the name {{cityName}}</h1>
+
+  <app-generic-table [tableSetting]="tableSettings" [tableData]="result"></app-generic-table>
+</div>
+
+
   

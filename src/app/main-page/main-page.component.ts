@@ -14,6 +14,22 @@ export class MainPageComponent implements OnInit {
 
   form: FormGroup = new FormGroup({});
 
+  cityName
+
+  tableSettings = {
+    cols:[
+      {key:"name",label:"City Name"},
+      {key:"country",label:"Country"},
+      {key:"state",label:"State (for US only)"},
+      {key:"temp",label:"Temperature"},
+      {key:"temp_max",label:"Max Temperature"},
+      {key:"temp_min",label:"Min Temperature"},
+      {key:"feels_like",label:"Feels Like"},
+      {key:"pressure",label:"Pressure"},
+      {key:"humidity",label:"Humidity"},
+      {key:"sea_level",label:"Sea Level"}
+    ]}
+
   constructor(private weatherService: WeatherService, private cityService: CityService) {  }
 
   ngOnInit(): void {
@@ -23,16 +39,15 @@ export class MainPageComponent implements OnInit {
   }
 
   getData(){
-    let value = this.form.get("cityName")?.value
-    if(!value){
+    this.cityName = this.form.get("cityName")?.value
+    if(!this.cityName){
       return;
     }
-    this.cityService.getCitiesByName(value).subscribe(res=>{
+    this.cityService.getCitiesByName(this.cityName).subscribe(res=>{
       this.result = res;
       this.result.forEach((city: any) => {
         this.weatherService.getWeatherByCoordinates(city.lat,city.lon).subscribe((weatherResult:any)=>{
-          city.weatherSlim = weatherResult.list[0].main
-          city.weather = weatherResult.list
+          Object.assign(city, weatherResult.list[0].main)
         })
       });
     })

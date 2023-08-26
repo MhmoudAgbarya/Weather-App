@@ -18,7 +18,6 @@ export class NetService {
   }
 
   getCitiesByName(cityName: string){
-    console.log(`${environment.geoApiUrl}/direct?q=${cityName}&appid=${environment.apiKey}`)
     return this.http.get(`${environment.geoApiUrl}/direct?q=${cityName}&limit=5&appid=${environment.apiKey}`)
   }
 }

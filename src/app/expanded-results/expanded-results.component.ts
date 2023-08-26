@@ -11,7 +11,21 @@ export class ExpandedResultsComponent implements OnInit {
 
   cityName
 
-  selectedCityData
+  selectedCityData = []
+
+  tableSettings = {
+    cols:[
+      {key:"dt_txt",label:"Time", sortBy: "dt"},
+      {key:"temp",label:"Temperature"},
+      {key:"temp_max",label:"Max Temperature"},
+      {key:"temp_min",label:"Min Temperature"},
+      {key:"feels_like",label:"Feels Like"},
+      {key:"pressure",label:"Pressure"},
+      {key:"humidity",label:"Humidity"},
+      {key:"sea_level",label:"Sea Level"}
+    ]}
+
+  
 
   constructor(private weatherService: WeatherService, private activatedRoute: ActivatedRoute) {
   }
@@ -19,19 +33,14 @@ export class ExpandedResultsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params=>{
       this.weatherService.getWeatherByCoordinates(params["lat"],params["lon"]).subscribe((weatherResult:any)=>{
-        this.selectedCityData = weatherResult.list
+        weatherResult.list.forEach(e=> {
+          const temp = Object.assign({}, e.main);
+          temp.dt_txt = e.dt_txt
+          temp.dt = e.dt
+          this.selectedCityData.push(temp)
+        })
         this.cityName = `${weatherResult.city.name} / ${weatherResult.city.country}`
       })
-    })
-  }
-
-  sortBy(key){
-    this.selectedCityData.sort((a,b)=>{
-      if(key === 'dt_txt'){
-        return b.dt_txt - a.dt_txt
-      }else{
-        return b.main[key] - a.main[key]
-      }
     })
   }
 

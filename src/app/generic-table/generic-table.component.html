@@ -1,0 +1,13 @@
+<div *ngIf="tableData && tableSetting">
+    <table>
+        <tr>
+          <th *ngFor="let col of tableSetting.cols"><div class="table-header"><mat-icon (click)="sortBy(col.sortBy ? col.sortBy : col.key)">sort</mat-icon> {{col.label}}</div></th>
+        </tr>
+        <tr  *ngFor="let e of tableData">
+            <td *ngFor="let col of tableSetting.cols">{{e[col.key]}}</td>
+        </tr>
+      </table>
+</div>
+ 
+
+  
