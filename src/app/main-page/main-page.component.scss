@@ -13,3 +13,15 @@ tr:nth-child(even) {
   flex-direction: column;
   width: 100%;
 }
+
+.history-card {
+  width: 11rem;
+  overflow: scroll;
+  background-color: whitesmoke;
+  height: 360px;
+}
+
+.s-button {
+  margin: 1rem;
+  font-size: 15px;
+}

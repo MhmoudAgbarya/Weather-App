@@ -19,30 +19,30 @@ export class GenericTableComponent implements OnInit {
   @Output() onRowClicked = new EventEmitter();
   @Output() customSort = new EventEmitter();
 
-  sortDirection = 'ASC';
-
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.tableSetting.cols.forEach((col) => (col.sortDirection = 'ASC'));
+  }
 
   sortBy(key) {
-    const sortRow = this.tableSetting.cols.find(
-      (r) => r.customSort === true && r.key === key
+    const sortCol = this.tableSetting.cols.find(
+      (r) => r.key === key || r.sortBy === key
     );
-    if (sortRow) {
-      this.customSort.emit({ key: key, sortDirection: this.sortDirection });
+    if (sortCol.customSort) {
+      this.customSort.emit({ key: key, sortDirection: sortCol.sortDirection });
     } else {
       this.tableData.sort((a, b) => {
-        if (this.sortDirection === 'ASC') {
+        if (sortCol.sortDirection === 'ASC') {
           return b[key] - a[key];
         } else {
           return a[key] - b[key];
         }
       });
     }
-    this.sortDirection === 'ASC'
-      ? (this.sortDirection = 'DESC')
-      : (this.sortDirection = 'ASC');
+    sortCol.sortDirection === 'ASC'
+      ? (sortCol.sortDirection = 'DESC')
+      : (sortCol.sortDirection = 'ASC');
   }
 
   onRowClick(row) {
