@@ -1,10 +1,31 @@
-<div *ngIf="selectedCityData && graphDataReady">
-    <h1>{{cityName}}</h1>
-    <div style="display: flex;">
-        <app-generic-table [tableSetting]="tableSettings" [tableData]="selectedCityData"></app-generic-table>
-        <app-graphs *ngIf="graphDataReady" [data]="selectedCityData" style="margin-left: 2rem;"></app-graphs>
-    </div>
+<div *ngIf="selectedCityData && graphDataReady; else spinner">
+  <form class="form-layout" [formGroup]="form" style="margin-bottom: 1rem">
+    <select
+      id="cityName"
+      type="select"
+      formControlName="cityName"
+      class="form-input"
+    >
+      <option *ngFor="let option of cityNameOptions" [ngValue]="option.key">
+        {{ option.label }}
+      </option>
+    </select>
+  </form>
+  <div class="d-flex">
+    <app-generic-table
+      [tableSetting]="tableSettings"
+      [tableData]="selectedCityData"
+      (customSort)="sortDescriptions($event)"
+    ></app-generic-table>
+    <app-graphs
+      *ngIf="graphDataReady"
+      [data]="selectedCityData"
+      style="margin-left: 2rem"
+    ></app-graphs>
+  </div>
 </div>
- 
-
-  
+<ng-template #spinner>
+  <div style="width: 100%; height: 100%" class="center">
+    <div class="loader"></div>
+  </div>
+</ng-template>

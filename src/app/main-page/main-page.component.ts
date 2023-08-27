@@ -7,87 +7,97 @@ import { WeatherService } from 'src/services/weather.service';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.scss']
+  styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
-
   result: any;
 
   form: FormGroup = new FormGroup({});
 
-  cityName
+  cityName;
 
-  searchHistory = JSON.parse(localStorage.getItem("searchHistory"))
+  searchHistory = JSON.parse(localStorage.getItem('searchHistory'));
 
-  loading = false
+  loading = false;
 
   tableSettings = {
-    cols:[
-      {key:"name",label:"City Name"},
-      {key:"country",label:"Country"},
-      {key:"state",label:"State (for US only)"},
-      {key:"temp",label:"Temperature"},
-      {key:"temp_max",label:"Max Temperature"},
-      {key:"temp_min",label:"Min Temperature"},
-      {key:"feels_like",label:"Feels Like"},
-      {key:"pressure",label:"Pressure"},
-      {key:"humidity",label:"Humidity"},
-      {key:"sea_level",label:"Sea Level"}
-    ]}
+    cols: [
+      { key: 'name', label: 'City Name' },
+      { key: 'country', label: 'Country' },
+      { key: 'state', label: 'State (for US only)' },
+      { key: 'temp', label: 'Temperature' },
+      { key: 'temp_max', label: 'Max Temperature' },
+      { key: 'temp_min', label: 'Min Temperature' },
+      { key: 'feels_like', label: 'Feels Like' },
+      { key: 'pressure', label: 'Pressure' },
+      { key: 'humidity', label: 'Humidity' },
+      { key: 'sea_level', label: 'Sea Level' },
+    ],
+  };
 
-  constructor(private weatherService: WeatherService, private cityService: CityService, private router: Router) {  }
+  constructor(
+    private weatherService: WeatherService,
+    private cityService: CityService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      cityName: new FormControl("")
-    })
+      cityName: new FormControl(''),
+    });
   }
 
-  search(){
-    this.loading = true
-    this.cityName = this.form.get("cityName")?.value
-    if(!this.cityName){
-    this.loading = false
-    return;
+  search() {
+    this.loading = true;
+    this.cityName = this.form.get('cityName')?.value;
+    if (!this.cityName) {
+      this.loading = false;
+      return;
     }
     this.saveToHistory();
-    this.getData()
+    this.getData();
   }
 
-  getData(){
-    this.cityService.getCitiesByName(this.cityName).subscribe(res=>{
+  getData() {
+    this.cityService.getCitiesByName(this.cityName).subscribe((res) => {
       this.result = res;
+      localStorage.setItem('cityList', JSON.stringify(res));
       this.result.forEach((city: any) => {
-        this.weatherService.getWeatherByCoordinates(city.lat,city.lon).subscribe((weatherResult:any)=>{
-          Object.assign(city, weatherResult.list[0].main)
-    this.loading = false
-        })
+        this.weatherService
+          .getWeatherByCoordinates(city.lat, city.lon)
+          .subscribe((weatherResult: any) => {
+            Object.assign(city, weatherResult.list[0].main);
+            this.loading = false;
+          });
       });
-    })
+    });
   }
 
-  saveToHistory(){
-    const history = JSON.parse(localStorage.getItem("searchHistory"));
-    if(history){
-      this.searchHistory = [...history, this.cityName]
-    }else{
-      this.searchHistory = [this.cityName]
+  saveToHistory() {
+    const history = JSON.parse(localStorage.getItem('searchHistory'));
+    if (history) {
+      this.searchHistory = [...history, this.cityName];
+    } else {
+      this.searchHistory = [this.cityName];
     }
-    localStorage.setItem("searchHistory", JSON.stringify(this.searchHistory))
+    localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
   }
 
-  searchFromHistory(cityName){
-    this.loading = true
+  searchFromHistory(cityName) {
+    this.loading = true;
     this.cityName = cityName;
-    if(!this.cityName){
-    this.loading = false
-    return;
+    if (!this.cityName) {
+      this.loading = false;
+      return;
     }
-    this.getData()
+    this.getData();
   }
 
-  onRowClicked(row){
-    this.router.navigate([`/extended-city-data/${row.lat}/${row.lon}`])
+  onRowClicked(row) {
+    this.router.navigate([`/extended-city-data/${row.lat}/${row.lon}`]);
   }
 
+  clearHistory() {
+    localStorage.clear();
+  }
 }

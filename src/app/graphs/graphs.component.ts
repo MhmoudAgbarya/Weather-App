@@ -3,79 +3,83 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-graphs',
   templateUrl: './graphs.component.html',
-  styleUrls: ['./graphs.component.scss']
+  styleUrls: ['./graphs.component.scss'],
 })
 export class GraphsComponent implements OnInit {
-
   dataPointsMap = {
-    "Temperature": "temp",
-    "Pressure": "pressure",
-    "Humidity": "humidity"
-  }
+    Temperature: 'temp',
+    'Feels Like': 'feels_like',
+    Humidity: 'humidity',
+  };
 
   @Input() data: any;
 
-  graphData
+  graphData;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.graphData = {
-      animationEnabled: true,  
-      title:{
-        text: "Weather Forcast"
+      animationEnabled: true,
+      title: {
+        text: 'Weather Forcast',
       },
       axisX: {
-        title: "Time"
+        title: 'Time',
       },
-      axisY: { 
-        title: ""                   
+      axisY: {
+        title: '',
       },
       toolTip: {
-        shared: true
+        shared: true,
       },
       legend: {
-        cursor:"pointer",
-        itemclick: function(e: any) {
-          if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible ){
-          e.dataSeries.visible = false;
+        cursor: 'pointer',
+        itemclick: function (e: any) {
+          if (
+            typeof e.dataSeries.visible === 'undefined' ||
+            e.dataSeries.visible
+          ) {
+            e.dataSeries.visible = false;
           } else {
-          e.dataSeries.visible = true;
+            e.dataSeries.visible = true;
           }
           e.chart.render();
-        }
+        },
       },
-      data: [{        
-        type: "spline",
-        showInLegend: true,
-        name: "Temperature",
-        dataPoints: [
-        ]
-      }, {        
-        type: "spline",
-        showInLegend: true,
-        name: "Pressure",
-        dataPoints: [
-        ]
-      }, {        
-        type: "spline",
-        showInLegend: true,
-        name: "Humidity",
-        dataPoints: [
-        ]
-      }]
-    }
-  this.addDataPoint("Temperature")
-  this.addDataPoint("Pressure")
-  this.addDataPoint("Humidity")
+      data: [
+        {
+          type: 'spline',
+          showInLegend: true,
+          name: 'Temperature',
+          dataPoints: [],
+        },
+        {
+          type: 'spline',
+          showInLegend: true,
+          name: 'Feels Like',
+          dataPoints: [],
+        },
+        {
+          type: 'spline',
+          showInLegend: true,
+          name: 'Humidity',
+          dataPoints: [],
+        },
+      ],
+    };
+    this.addDataPoint('Temperature');
+    this.addDataPoint('Feels Like');
+    this.addDataPoint('Humidity');
   }
 
-  addDataPoint(label: string){
-    let index = this.graphData.data.findIndex(e=>e.name == label)
-    this.data.forEach(element=>{
-      this.graphData.data[index].dataPoints.push({label: element.dt_txt,y: element[this.dataPointsMap[label]]})
-    })
+  addDataPoint(label: string) {
+    let index = this.graphData.data.findIndex((e) => e.name == label);
+    this.data.forEach((element) => {
+      this.graphData.data[index].dataPoints.push({
+        label: element.dt_txt,
+        y: element[this.dataPointsMap[label]],
+      });
+    });
   }
-
 }
