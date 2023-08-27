@@ -13,6 +13,8 @@ export class ExpandedResultsComponent implements OnInit {
 
   selectedCityData = []
 
+  graphDataReady = false
+
   tableSettings = {
     cols:[
       {key:"dt_txt",label:"Time", sortBy: "dt"},
@@ -40,6 +42,7 @@ export class ExpandedResultsComponent implements OnInit {
           this.selectedCityData.push(temp)
         })
         this.cityName = `${weatherResult.city.name} / ${weatherResult.city.country}`
+        this.graphDataReady = true
       })
     })
   }

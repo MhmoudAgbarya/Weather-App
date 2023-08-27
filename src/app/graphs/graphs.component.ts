@@ -74,7 +74,7 @@ export class GraphsComponent implements OnInit {
   addDataPoint(label: string){
     let index = this.graphData.data.findIndex(e=>e.name == label)
     this.data.forEach(element=>{
-      this.graphData.data[index].dataPoints.push({label: element.dt_txt,y: element.main[this.dataPointsMap[label]]})
+      this.graphData.data[index].dataPoints.push({label: element.dt_txt,y: element[this.dataPointsMap[label]]})
     })
   }
 

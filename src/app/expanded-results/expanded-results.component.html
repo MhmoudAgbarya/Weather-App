@@ -1,7 +1,9 @@
-<div *ngIf="selectedCityData">
+<div *ngIf="selectedCityData && graphDataReady">
     <h1>{{cityName}}</h1>
-      <app-generic-table [tableSetting]="tableSettings" [tableData]="selectedCityData"></app-generic-table>
-  <app-graphs  [data]="selectedCityData"></app-graphs>
+    <div style="display: flex;">
+        <app-generic-table [tableSetting]="tableSettings" [tableData]="selectedCityData"></app-generic-table>
+        <app-graphs *ngIf="graphDataReady" [data]="selectedCityData" style="margin-left: 2rem;"></app-graphs>
+    </div>
 </div>
  
 

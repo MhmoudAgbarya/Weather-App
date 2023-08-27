@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-generic-table',
@@ -9,6 +9,8 @@ export class GenericTableComponent implements OnInit {
 
   @Input() tableData;
   @Input() tableSetting;
+
+  @Output() onRowClicked = new EventEmitter()
 
   sortDirection = "ASC"
 
@@ -27,6 +29,10 @@ export class GenericTableComponent implements OnInit {
       }
     })
     this.sortDirection === "ASC" ? this.sortDirection = "DESC" : this.sortDirection = "ASC"
+  }
+
+  onRowClick(row){
+    this.onRowClicked.emit(row)
   }
 
 }

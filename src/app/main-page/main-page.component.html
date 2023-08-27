@@ -1,14 +1,30 @@
-<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+<div style="display: flex;">
+<div style="width: 11rem; overflow: scroll; background-color: whitesmoke; height: 360px;">
+    <h3 style="padding: 1rem;">Search History</h3>
+    <ul *ngFor="let item of searchHistory">
+        <li><a href="#" (click)="searchFromHistory(item)">{{item}}</a></li>
+    </ul>
+</div>
+
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%;">
 <form [formGroup]="form" style="display: flex; justify-content: center; align-items: center;height: 3rem;">
     <label for="cityName" class="form-control" style="margin-right: 10px; background-color: #46a7f7; max-height: 100%; display: flex; justify-content: center; align-items: center; padding: 1rem; color: whitesmoke; border-radius: 4px;"><span>Enter City Name</span></label>
     <input id="cityName" type="text" formControlName="cityName" style="border-radius: 4px; height: 100%;">
   </form>
 
   <button style="margin: 1rem;" (click)="getData()">Get Data</button>
-  
-  <h1 *ngIf="cityName">{{result?.length}} Cities found with the name {{cityName}}</h1>
 
-  <app-generic-table [tableSetting]="tableSettings" [tableData]="result"></app-generic-table>
+  <div *ngIf="!loading; else spinner">
+  
+  <h1 style="display: flex; justify-content: center; align-items: center;" *ngIf="cityName && result">{{result?.length}} Cities found with the name {{cityName}}</h1>
+
+  <app-generic-table [tableSetting]="tableSettings" [tableData]="result" (onRowClicked)="onRowClicked($event)"></app-generic-table>
+</div>
+<ng-template #spinner>
+<div class="loader"></div>
+</ng-template>
+
+</div>
 </div>
 
 

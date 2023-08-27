@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CityService } from 'src/services/city.service';
 import { WeatherService } from 'src/services/weather.service';
 
@@ -16,6 +17,10 @@ export class MainPageComponent implements OnInit {
 
   cityName
 
+  searchHistory = JSON.parse(localStorage.getItem("searchHistory"))
+
+  loading = false
+
   tableSettings = {
     cols:[
       {key:"name",label:"City Name"},
@@ -30,7 +35,7 @@ export class MainPageComponent implements OnInit {
       {key:"sea_level",label:"Sea Level"}
     ]}
 
-  constructor(private weatherService: WeatherService, private cityService: CityService) {  }
+  constructor(private weatherService: WeatherService, private cityService: CityService, private router: Router) {  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -38,19 +43,51 @@ export class MainPageComponent implements OnInit {
     })
   }
 
-  getData(){
+  search(){
+    this.loading = true
     this.cityName = this.form.get("cityName")?.value
     if(!this.cityName){
-      return;
+    this.loading = false
+    return;
     }
+    this.saveToHistory();
+    this.getData()
+  }
+
+  getData(){
     this.cityService.getCitiesByName(this.cityName).subscribe(res=>{
       this.result = res;
       this.result.forEach((city: any) => {
         this.weatherService.getWeatherByCoordinates(city.lat,city.lon).subscribe((weatherResult:any)=>{
           Object.assign(city, weatherResult.list[0].main)
+    this.loading = false
         })
       });
     })
+  }
+
+  saveToHistory(){
+    const history = JSON.parse(localStorage.getItem("searchHistory"));
+    if(history){
+      this.searchHistory = [...history, this.cityName]
+    }else{
+      this.searchHistory = [this.cityName]
+    }
+    localStorage.setItem("searchHistory", JSON.stringify(this.searchHistory))
+  }
+
+  searchFromHistory(cityName){
+    this.loading = true
+    this.cityName = cityName;
+    if(!this.cityName){
+    this.loading = false
+    return;
+    }
+    this.getData()
+  }
+
+  onRowClicked(row){
+    this.router.navigate([`/extended-city-data/${row.lat}/${row.lon}`])
   }
 
 }
