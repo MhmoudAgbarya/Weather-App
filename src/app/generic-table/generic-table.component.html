@@ -3,9 +3,11 @@
     <tr>
       <th *ngFor="let col of tableSetting.cols">
         <div class="table-header">
-          <mat-icon (click)="sortBy(col.sortBy ? col.sortBy : col.key)"
-            >sort</mat-icon
-          >
+          <img
+            class="icon"
+            src="../../assets/sort-svgrepo-com.svg"
+            (click)="sortBy(col.sortBy ? col.sortBy : col.key)"
+          />
           {{ col.label }}
         </div>
       </th>

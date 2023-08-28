@@ -10,9 +10,7 @@ import { ExpandedResultsComponent } from './expanded-results/expanded-results.co
 import { GraphsComponent } from './graphs/graphs.component';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import{MatIconModule}from '@angular/material/icon';
 import { GenericTableComponent } from './generic-table/generic-table.component';
-import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -20,7 +18,7 @@ import {MatButtonModule} from '@angular/material/button';
     MainPageComponent,
     ExpandedResultsComponent,
     GraphsComponent,
-    GenericTableComponent
+    GenericTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,10 +28,8 @@ import {MatButtonModule} from '@angular/material/button';
     ReactiveFormsModule,
     CanvasJSAngularChartsModule,
     BrowserAnimationsModule,
-    MatIconModule,
-    MatButtonModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
