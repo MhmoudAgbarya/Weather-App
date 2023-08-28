@@ -1,3 +1,6 @@
+<button style="margin-bottom: 1rem" [routerLink]="['/']">
+  Back to main page
+</button>
 <div *ngIf="selectedCityData && graphDataReady; else spinner">
   <form class="form-layout" [formGroup]="form" style="margin-bottom: 1rem">
     <select

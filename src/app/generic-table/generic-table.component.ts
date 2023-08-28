@@ -26,23 +26,26 @@ export class GenericTableComponent implements OnInit {
   }
 
   sortBy(key) {
-    const sortCol = this.tableSetting.cols.find(
+    const sortColIndex = this.tableSetting.cols.findIndex(
       (r) => r.key === key || r.sortBy === key
     );
-    if (sortCol.customSort) {
-      this.customSort.emit({ key: key, sortDirection: sortCol.sortDirection });
+    if (this.tableSetting.cols[sortColIndex].customSort) {
+      this.customSort.emit({
+        key: key,
+        sortDirection: this.tableSetting.cols[sortColIndex].sortDirection,
+      });
     } else {
       this.tableData.sort((a, b) => {
-        if (sortCol.sortDirection === 'ASC') {
+        if (this.tableSetting.cols[sortColIndex].sortDirection === 'ASC') {
           return b[key] - a[key];
         } else {
           return a[key] - b[key];
         }
       });
     }
-    sortCol.sortDirection === 'ASC'
-      ? (sortCol.sortDirection = 'DESC')
-      : (sortCol.sortDirection = 'ASC');
+    this.tableSetting.cols[sortColIndex].sortDirection === 'ASC'
+      ? (this.tableSetting.cols[sortColIndex].sortDirection = 'DESC')
+      : (this.tableSetting.cols[sortColIndex].sortDirection = 'ASC');
   }
 
   onRowClick(row) {

@@ -99,5 +99,6 @@ export class MainPageComponent implements OnInit {
 
   clearHistory() {
     localStorage.clear();
+    this.searchHistory = JSON.parse(localStorage.getItem('searchHistory'));
   }
 }
